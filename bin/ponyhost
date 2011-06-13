@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+require 'ponyhost'
+
+command = ARGV.shift
+bucketname = ARGV.shift
+bucketname = normalize_bucketname(bucketname) if bucketname
+
+if command == "server"
+  server()
+elsif command == "list" || (["create", "push",  "destroy", "show", "version"].include?(command) && bucketname != nil)
+  credentials = PonyHost.obtain_credentials
+  
+  AWS::S3::Base.establish_connection!({
+      :access_key_id     => credentials[:access_key_id],
+      :secret_access_key => credentials[:access_key_secret]
+  })
+  
+  if(command == "create")
+    PonyHost.create(bucketname)
+  elsif(command == "push")
+    PonyHost.push(bucketname, ".")
+  elsif(command == "autopush")
+    # TODO 
+    # monitor cwd and push automatically?
+  elsif(command == "destroy")
+    puts "Do you really wanna destroy '#{bucketname}' (type 'YES'):"
+    PonyHost.destroy(bucketname) if STDIN.gets.chop == "YES"
+  elsif(command == "list")
+    puts "Your sites:"
+    PonyHost.list.each do |name|
+      puts "http://#{name}"
+    end
+  elsif(command == "show")
+    # deprecated?
+    PonyHost.show(bucketname)
+  elsif(command == "version")
+    puts "ponyhost version #{PonyHost::VERSION}"
+    puts "created by Johannes Wagener http://johannes.wagener.cc"
+  end
+else
+  puts "usage: ponyhost <command> [<sitename>]"
+  puts " "
+  puts "available commands:"
+  puts "  list                  Lists all sites/buckets from your S3 account"
+  puts "  create  [sitename]    Creates a new bucket for your site"
+  puts "  push    [sitename]    Pushes the current directory to the specified bucket/site"
+  puts "  destroy [sitename]    Removes all files and destroys the bucket"
+  puts "  server                Runs a local HTTP server for the current directory"
+#  puts "  version                Print version information"
+  puts " "
+  puts "Notes: if the sitename contains no '.' it will be suffixed with the default domain #{PonyHost::DEFAULT_DOMAIN}"
+  puts "To use your own domainname you have to set up the DNS correctly:"
+  puts "For a site under a subdomain like www.foobar.com you have to create a CNAME record for www.foobar.com to website-s3.aws.com"
+  puts "For a site under a domain like foobar.com you have to create an A record pointing to XXX.XXX.XXX.XXX"
+  puts "Once thats done you just have to create the site with the correct name:"
+  puts "$ ponyhost create www.foobar.com"
+  puts " "
+
+end
