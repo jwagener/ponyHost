@@ -4,7 +4,7 @@ require 'ponyhost'
 
 command = ARGV.shift
 bucketname = ARGV.shift
-bucketname = normalize_bucketname(bucketname) if bucketname
+bucketname = PonyHost.normalize_bucketname(bucketname) if bucketname
 
 if command == "server"
   server()
@@ -24,7 +24,7 @@ elsif command == "list" || (["create", "push",  "destroy", "show", "version"].in
     # TODO 
     # monitor cwd and push automatically?
   elsif(command == "destroy")
-    puts "Do you really wanna destroy '#{bucketname}' (type 'YES'):"
+    print "Do you really wanna destroy '#{bucketname}' (type 'YES'):"
     PonyHost.destroy(bucketname) if STDIN.gets.chop == "YES"
   elsif(command == "list")
     puts "Your sites:"
@@ -51,8 +51,8 @@ else
   puts " "
   puts "Notes: if the sitename contains no '.' it will be suffixed with the default domain #{PonyHost::DEFAULT_DOMAIN}"
   puts "To use your own domainname you have to set up the DNS correctly:"
-  puts "For a site under a subdomain like www.foobar.com you have to create a CNAME record for www.foobar.com to website-s3.aws.com"
-  puts "For a site under a domain like foobar.com you have to create an A record pointing to XXX.XXX.XXX.XXX"
+  puts "For a site under a subdomain like www.foobar.com you have to create a CNAME record for www.foobar.com to s3-website-us-east-1.amazonaws.com"
+  puts "For a site under a domain like foobar.com you have to create an A record pointing to 72.21.214.197"
   puts "Once thats done you just have to create the site with the correct name:"
   puts "$ ponyhost create www.foobar.com"
   puts " "

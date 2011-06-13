@@ -12,23 +12,25 @@ end
 
 
 class PonyHost
-  S3_CREDENTIAL_FILES = ["~/.s3website.yml", "./.s3website.yml"]
+  S3_CREDENTIAL_FILES = ["~/.ponyhost.yml"]
   DEFAULT_DOMAIN = "lolcat.biz"
   VERSION = "0.1"
   class << self 
     
 
     def obtain_credentials
-      credential_file = File.expand_path("~/.s3website")
+      credential_file = File.expand_path(S3_CREDENTIAL_FILES.first)
       if File.exists?(credential_file)
         return YAML.load_file(credential_file)
       else
-        puts "AWS Credentials file '#{credential_file}' missing. We'll create one:"
+        puts "AWS Credentials file '#{credential_file}' missing. We'll create one."
+        puts "You'll find your Amazon AWS credentials here:"
+        puts "https://aws-portal.amazon.com/gp/aws/developer/account/index.html?ie=UTF8&action=access-key"
         #http://aws.amazon.com/account/
         credentials = {}
-        puts "Your AWS Access Key ID:"
+        print "Your AWS Access Key ID: "
         credentials[:access_key_id] = STDIN.gets.chop
-        puts "Your AWS Access Key Secret:"
+        print "Your AWS Access Key Secret: "
         credentials[:access_key_secret] = STDIN.gets.chop
         File.open(credential_file, "w") {|file| file.puts(credentials.to_yaml) }
         return credentials
