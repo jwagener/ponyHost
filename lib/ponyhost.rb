@@ -13,8 +13,8 @@ end
 
 class PonyHost
   S3_CREDENTIAL_FILES = ["~/.ponyhost.yml"]
-  DEFAULT_DOMAIN = "lolcat.biz"
-  VERSION = "0.1"
+  DEFAULT_DOMAIN = "ponyho.st"
+  VERSION = "0.2.0"
   class << self 
     
 
