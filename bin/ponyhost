@@ -21,8 +21,7 @@ elsif command == "list" || (["create", "push",  "destroy", "show", "version"].in
   elsif(command == "push")
     PonyHost.push(bucketname, ".")
   elsif(command == "autopush")
-    # TODO 
-    # monitor cwd and push automatically?
+    puts "Not Yet Implemented"
   elsif(command == "destroy")
     print "Do you really wanna destroy '#{bucketname}' (type 'YES'):"
     PonyHost.destroy(bucketname) if STDIN.gets.chop == "YES"
@@ -31,30 +30,28 @@ elsif command == "list" || (["create", "push",  "destroy", "show", "version"].in
     PonyHost.list.each do |name|
       puts "http://#{name}"
     end
-  elsif(command == "show")
-    # deprecated?
-    PonyHost.show(bucketname)
   elsif(command == "version")
     puts "ponyhost version #{PonyHost::VERSION}"
     puts "created by Johannes Wagener http://johannes.wagener.cc"
   end
 else
-  puts "usage: ponyhost <command> [<sitename>]"
-  puts " "
-  puts "available commands:"
-  puts "  list                  Lists all sites/buckets from your S3 account"
-  puts "  create  [sitename]    Creates a new bucket for your site"
-  puts "  push    [sitename]    Pushes the current directory to the specified bucket/site"
-  puts "  destroy [sitename]    Removes all files and destroys the bucket"
-  puts "  server                Runs a local HTTP server for the current directory"
-#  puts "  version                Print version information"
-  puts " "
-  puts "Notes: if the sitename contains no '.' it will be suffixed with the default domain #{PonyHost::DEFAULT_DOMAIN}"
-  puts "To use your own domainname you have to set up the DNS correctly:"
-  puts "For a site under a subdomain like www.foobar.com you have to create a CNAME record for www.foobar.com to s3-website-us-east-1.amazonaws.com"
-  puts "For a site under a domain like foobar.com you have to create an A record pointing to 72.21.214.197"
-  puts "Once thats done you just have to create the site with the correct name:"
-  puts "$ ponyhost create www.foobar.com"
-  puts " "
-
+  puts <<-EOF
+  usage: ponyhost <command> [<sitename>]
+  
+  available commands:
+    list                  Lists all sites/buckets from your S3 account
+    create  [name]        Creates a new bucket for your site
+    push    [name]        Pushes the current directory to the specified bucket/site
+    destroy [name]        Removes all files and destroys the bucket
+    server                Runs a local HTTP server for the current directory
+   
+  Notes: if the name contains no '.' it will be suffixed with the default domain #{PonyHost::DEFAULT_DOMAIN}
+  To use a custom domain you have to set up the DNS correctly:
+  For a site under a subdomain like www.foobar.com you have to create a CNAME record for www.foobar.com to s3-website-us-east-1.amazonaws.com
+  For a site under a domain like foobar.com you have to create an A record pointing to 72.21.214.197
+  Once thats done you just have to create the site with the correct name:
+  $ ponyhost create www.foobar.com
+  
+  For details have a look at the README.
+  EOF
 end

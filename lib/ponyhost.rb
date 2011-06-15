@@ -13,8 +13,9 @@ end
 
 class PonyHost
   S3_CREDENTIAL_FILES = ["~/.ponyhost.yml"]
+  S3_CREDENTIAL_LINK = "https://aws-portal.amazon.com/gp/aws/developer/account/index.html?ie=UTF8&action=access-key"
   DEFAULT_DOMAIN = "ponyho.st"
-  VERSION = "0.2.1"
+  VERSION = "0.3.0"
   class << self 
     
 
@@ -25,8 +26,8 @@ class PonyHost
       else
         puts "AWS Credentials file '#{credential_file}' missing. We'll create one."
         puts "You'll find your Amazon AWS credentials here:"
-        puts "https://aws-portal.amazon.com/gp/aws/developer/account/index.html?ie=UTF8&action=access-key"
-        #http://aws.amazon.com/account/
+        puts S3_CREDENTIAL_LINK
+
         credentials = {}
         print "Your AWS Access Key ID: "
         credentials[:access_key_id] = STDIN.gets.chop
