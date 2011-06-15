@@ -7,7 +7,7 @@ bucketname = ARGV.shift
 bucketname = PonyHost.normalize_bucketname(bucketname) if bucketname
 
 if command == "server"
-  server()
+  PonyHost.server()
 elsif command == "list" || (["create", "push",  "destroy", "show", "version"].include?(command) && bucketname != nil)
   credentials = PonyHost.obtain_credentials
   
