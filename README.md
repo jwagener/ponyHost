@@ -12,12 +12,12 @@ account and the [access key id and secret](https://aws-portal.amazon.com/gp/aws/
 
 The installation is as simple as:
 
-      gem install ponyhost
+      $ gem install ponyhost
 
 ## Commands ##
 ### Create ###
 
-      ponyhost create your-site
+      $ ponyhost create your-site
 
   Will create the S3 bucket with a website configuration.
   Per default index.html will be the index document and 404.html the error document.
@@ -27,7 +27,7 @@ The installation is as simple as:
   
   If you prefer to use a custom domain just pass the name accordingly.
   
-      ponyhost create foo.yoursite.com
+      $ ponyhost create foo.yoursite.com
       
   You'll have to setup a DNS CNAME record for foo.yoursite.com to s3-website-us-east-1.amazonaws.com.
   It's also possible to use a naked domain like yoursite.com. 
@@ -36,14 +36,20 @@ The installation is as simple as:
 
 ### Push ###
 
+      $ ponyhost push your-site
+
   Will compare the md5 sum for each file in the current directory with the remote file and push the file if necessary.
   Currently it won't delete files in the bucket.
 
 ### Server ###
+
+      $ ponyhost server
   
   Runs a very basic HTTP server for the current directory on http://localhost:9090
   
 ### Destroy ###
+      
+      $ ponyhost destroy your-site
 
   Will delete the bucket and all files on S3.
 
