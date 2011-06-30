@@ -10,29 +10,32 @@ if command == "server"
   PonyHost.server()
 elsif command == "list" || (["create", "push",  "destroy", "show", "version"].include?(command) && bucketname != nil)
   credentials = PonyHost.obtain_credentials
-  
-  AWS::S3::Base.establish_connection!({
-      :access_key_id     => credentials[:access_key_id],
-      :secret_access_key => credentials[:access_key_secret]
-  })
-  
-  if(command == "create")
-    PonyHost.create(bucketname)
-  elsif(command == "push")
-    PonyHost.push(bucketname, ".")
-  elsif(command == "autopush")
-    puts "Not Yet Implemented"
-  elsif(command == "destroy")
-    print "Do you really wanna destroy '#{bucketname}' (type 'YES'):"
-    PonyHost.destroy(bucketname) if STDIN.gets.chop == "YES"
-  elsif(command == "list")
-    puts "Your sites:"
-    PonyHost.list.each do |name|
-      puts "http://#{name}"
+  begin 
+    AWS::S3::Base.establish_connection!({
+        :access_key_id     => credentials[:access_key_id],
+        :secret_access_key => credentials[:access_key_secret]
+    })
+    
+    if(command == "create")
+      PonyHost.create(bucketname)
+    elsif(command == "push")
+      PonyHost.push(bucketname, ".")
+    elsif(command == "autopush")
+      puts "Not Yet Implemented"
+    elsif(command == "destroy")
+      print "Do you really wanna destroy '#{bucketname}' (type 'YES'):"
+      PonyHost.destroy(bucketname) if STDIN.gets.chop == "YES"
+    elsif(command == "list")
+      puts "Your sites:"
+      PonyHost.list.each do |name|
+        puts "http://#{name}"
+      end
+    elsif(command == "version")
+      puts "ponyhost version #{PonyHost::VERSION}"
+      puts "created by Johannes Wagener http://johannes.wagener.cc"
     end
-  elsif(command == "version")
-    puts "ponyhost version #{PonyHost::VERSION}"
-    puts "created by Johannes Wagener http://johannes.wagener.cc"
+  rescue Exception => e
+    puts "Ooops: #{e.message}"
   end
 else
   puts <<-EOF

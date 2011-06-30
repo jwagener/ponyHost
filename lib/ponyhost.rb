@@ -15,7 +15,7 @@ class PonyHost
   S3_CREDENTIAL_FILES = ["~/.ponyhost.yml"]
   S3_CREDENTIAL_LINK = "https://aws-portal.amazon.com/gp/aws/developer/account/index.html?ie=UTF8&action=access-key"
   DEFAULT_DOMAIN = "ponyho.st"
-  VERSION = "0.3.0"
+  VERSION = "0.3.1"
   class << self 
     
 
@@ -24,9 +24,9 @@ class PonyHost
       if File.exists?(credential_file)
         return YAML.load_file(credential_file)
       else
-        puts "AWS Credentials file '#{credential_file}' missing. We'll create one."
-        puts "You'll find your Amazon AWS credentials here:"
-        puts S3_CREDENTIAL_LINK
+        puts "AWS Credentials file '#{credential_file}' is missing."
+        puts "Please insert your Amazon AWS S3 credentials. You can look them up on http://j.mp/aws-keys"
+        puts "In case you don't have signed up for S3 yet you can do that on http://j.mp/s3-signup"
 
         credentials = {}
         print "Your AWS Access Key ID: "

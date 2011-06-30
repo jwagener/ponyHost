@@ -55,7 +55,7 @@ The installation is as simple as:
 
 ## ToDo ##
 
-* Implement a autopush command
+* Implement an autopush command
 * Implement a robust HTTP server
-* Support other availability zones
-* Delete files in bucket
+* Support other AWS availability zones
+* Delete files in bucket on push
