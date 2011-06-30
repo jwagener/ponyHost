@@ -1,7 +1,8 @@
 require 'yaml'
 require 'aws/s3'
-require 'socket'
+require 'webrick'
 require 'digest/md5'
+
 
 # monkey patch to add website to extract significant parameter
 class AWS::S3::Authentication::CanonicalString
@@ -15,7 +16,7 @@ class PonyHost
   S3_CREDENTIAL_FILES = ["~/.ponyhost.yml"]
   S3_CREDENTIAL_LINK = "https://aws-portal.amazon.com/gp/aws/developer/account/index.html?ie=UTF8&action=access-key"
   DEFAULT_DOMAIN = "ponyho.st"
-  VERSION = "0.3.1"
+  VERSION = "0.3.2"
   class << self 
     
 
@@ -83,30 +84,8 @@ class PonyHost
       puts res  
     end
 
-    def server(port=9090)
-      s=TCPServer.new(port);
-      puts "Server running on http://localhost:#{port}"
-      loop do 
-        _ = s.accept
-        requested_filename = _.gets.split[1]
-        requested_filename = "/index.html" if requested_filename == "/"
-        begin
-          data = File.read(".#{requested_filename}")
-          status = 200
-        rescue 
-          status = 404
-          if File.exists?("404.html")
-            data = File.read("404.html")
-          else
-            data = "#{requested_filename} not found and no 404.html error page either."
-          end
-        end
-        status_msg = status == 200 ? "OK" : "NOT FOUND"
-        _ << "HTTP/1.0 #{status} #{status_msg}\r\n\r\n#{data}";
-
-        puts %Q{[#{Time.now}] "GET #{requested_filename}" #{status}} 
-        _.close
-      end
+    def server(port=9090)      
+      s = WEBrick::HTTPServer.new(:Port => port,  :DocumentRoot => Dir.pwd); trap('INT') { s.shutdown }; s.start
     end
 
     def md5sum(file_name)
