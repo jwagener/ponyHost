@@ -59,3 +59,4 @@ The installation is as simple as:
 * Implement a robust HTTP server
 * Support other AWS availability zones
 * Delete files in bucket on push
+* .ponyignore
