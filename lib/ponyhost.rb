@@ -16,7 +16,7 @@ class PonyHost
   S3_CREDENTIAL_FILES = ["~/.ponyhost.yml"]
   S3_CREDENTIAL_LINK = "https://aws-portal.amazon.com/gp/aws/developer/account/index.html?ie=UTF8&action=access-key"
   DEFAULT_DOMAIN = "ponyho.st"
-  VERSION = "0.3.2"
+  VERSION = "0.3.3"
   class << self 
     
 

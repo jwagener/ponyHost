@@ -46,6 +46,7 @@ The installation is as simple as:
       $ ponyhost server
   
   Runs a very basic HTTP server for the current directory on http://localhost:9090
+  You can specify an alternative port with the `-p PORT` option.
   
 ### Destroy ###
       
@@ -56,6 +57,5 @@ The installation is as simple as:
 ## ToDo ##
 
 * Implement an autopush command
-* Implement a robust HTTP server
 * Support other AWS availability zones
 * Delete files in bucket on push

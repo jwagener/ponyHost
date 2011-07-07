@@ -1,14 +1,15 @@
 #!/usr/bin/env ruby
 
 require 'ponyhost'
-
+DEFAULT_PORT = 9090
 command = ARGV.shift
-bucketname = ARGV.shift
-bucketname = PonyHost.normalize_bucketname(bucketname) if bucketname
 
 if command == "server"
-  PonyHost.server()
-elsif command == "list" || (["create", "push",  "destroy", "show", "version"].include?(command) && bucketname != nil)
+  port = ARGV.shift == "-p" ? ARGV.shift.to_i : DEFAULT_PORT
+  PonyHost.server(port)
+elsif command == "list" || (["create", "push",  "destroy", "show", "version"].include?(command) && (bucketname = ARGV.shift))
+  bucketname = PonyHost.normalize_bucketname(bucketname) if bucketname
+  
   credentials = PonyHost.obtain_credentials
   begin 
     AWS::S3::Base.establish_connection!({
@@ -46,7 +47,7 @@ else
     create  [name]        Creates a new bucket for your site
     push    [name]        Pushes the current directory to the specified bucket/site
     destroy [name]        Removes all files and destroys the bucket
-    server                Runs a local HTTP server for the current directory
+    server  [-p PORT]     Runs a local HTTP server for the current directory. Default Port is #{DEFAULT_PORT}
    
   Notes: if the name contains no '.' it will be suffixed with the default domain #{PonyHost::DEFAULT_DOMAIN}
   To use a custom domain you have to set up the DNS correctly:
