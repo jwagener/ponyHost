@@ -16,7 +16,7 @@ class PonyHost
   S3_CREDENTIAL_FILES = ["~/.ponyhost.yml"]
   S3_CREDENTIAL_LINK = "https://aws-portal.amazon.com/gp/aws/developer/account/index.html?ie=UTF8&action=access-key"
   DEFAULT_DOMAIN = "ponyho.st"
-  VERSION = "0.3.3"
+  VERSION = "0.3.4"
   class << self 
     
 
@@ -95,7 +95,7 @@ class PonyHost
     def flat_list_directory(dir, path = "")
       list = []
       dir.each do |entry|
-        unless [".", ".."].include?(entry)
+        unless [".", "..", ".git"].include?(entry)
           full_entry_path = path == "" ? entry : [path, entry].join("/")
           if File.directory?(full_entry_path)
             list += flat_list_directory(Dir.new(full_entry_path), full_entry_path)
